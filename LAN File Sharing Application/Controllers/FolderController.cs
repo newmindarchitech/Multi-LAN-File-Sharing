@@ -109,11 +109,8 @@ namespace LAN_File_Sharing_Application.Controllers
             }
             return View(model);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var deleteFolder = await _db.UserFolders.FindAsync(id);
+        public IActionResult Delete(Guid id) {
+            var deleteFolder = _db.UserFolders.Find(id);
             if (deleteFolder == null)
             {
                 return RedirectToAction("Index");
@@ -123,20 +120,27 @@ namespace LAN_File_Sharing_Application.Controllers
                 try
                 {
                     _db.UserFolders.Remove(deleteFolder);
-                    await _db.SaveChangesAsync();
-                    string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders",deleteFolder.FolderName);
-                    string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders", deleteFolder.FolderName);
+                     _db.SaveChanges();
+                    string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                    string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
                     if (Directory.Exists(findFolder))
                     {
                         Directory.Delete(changeFolderName);
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", "Folder");
                     }
                 }
-                catch (DbUpdateException e) {
+                catch (DbUpdateException e)
+                {
                     e.ToString();
                 }
             }
-            return View();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Redirect(Guid id)
+        {
+            return RedirectToAction("Index", "Images", new { id = id });
         }
     }
+        
 }

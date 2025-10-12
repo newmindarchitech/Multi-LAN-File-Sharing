@@ -23,6 +23,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.Validate();
 });
 
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("UserAuth", policy => policy.RequireRole("User"));
