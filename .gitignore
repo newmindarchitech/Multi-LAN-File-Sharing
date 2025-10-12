@@ -1,7 +1,7 @@
 .vs/
 LAN\ File\ Sharing\ Application/obj/
-LAN\ File\ Sharing\ Application/*.*.json
-LAN\ File\ Sharing\ Application/*.json
+#LAN\ File\ Sharing\ Application/*.*.json
+#LAN\ File\ Sharing\ Application/*.json
 LAN\ File\ Sharing\ Application/Migrations/
 LAN\ File\ Sharing\ Application/wwwroot/UserFolders/
 LAN\ File\ Sharing\ Application/bin/
