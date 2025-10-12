@@ -13,6 +13,8 @@ namespace LAN_File_Sharing_Application.Models
         public DbSet<userFolder> UserFolders { get; set; }
 
         public DbSet<Bucket> Buckets { get; set; }
+
+        public DbSet<Images> Images { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);

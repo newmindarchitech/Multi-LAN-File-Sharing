@@ -1,0 +1,55 @@
+﻿@model IEnumerable<LAN_File_Sharing_Application.Models.userFolder>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Folders</h1>
+
+<p>
+    <a asp-action="Create">Create New Folder</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FolderName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BucketID)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FolderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BucketID)
+            </td>
+            <td style=" white-space:nowrap">
+                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-controller="Folder" asp-route-id="@item.ID">Edit</a>
+                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-controller="Folder" asp-route-id="@item.ID">Delete</a>
+                <a class="btn btn-outline-primary btn-sm" asp-action="Index" asp-controller="Images" asp-route-id="@item.ID">Access Images</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
