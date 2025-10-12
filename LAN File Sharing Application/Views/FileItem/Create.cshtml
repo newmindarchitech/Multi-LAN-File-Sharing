@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Tạo tệp tin mới";
+}
+<div class="container mt-4">
+    <h2>🗂️ Tạo tệp tin mới</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Tên tệp tin:</label>
+            <input type="text" name="fileName" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Tạo</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>

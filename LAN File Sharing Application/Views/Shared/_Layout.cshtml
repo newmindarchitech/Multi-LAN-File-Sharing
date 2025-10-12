@@ -26,6 +26,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="FileItem" asp-action="Index">Tệp & Ảnh</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Folder" asp-action="Index">Thư mục & Ảnh</a>
+                        </li>
                     </ul>
                     @await Html.PartialAsync("_LoginPartial")
                 </div>

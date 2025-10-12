@@ -1,0 +1,23 @@
+﻿@model IEnumerable<LAN_File_Sharing_Application.Models.Images>
+
+@{
+    var folder = ViewBag.Folder as LAN_File_Sharing_Application.Models.userFolder;
+}
+
+<div class="container mt-4">
+    <h2>📸 Ảnh trong thư mục: @folder.FolderName</h2>
+
+    <div class="row mt-3">
+        @foreach (var img in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm">
+                    <img src="~/@img.FilePath" class="card-img-top" style="object-fit:cover;height:200px;" />
+                    <div class="card-body text-center">
+                        <p class="card-text text-truncate">@img.FileName</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

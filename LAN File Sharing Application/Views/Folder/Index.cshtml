@@ -1,0 +1,25 @@
+﻿@model IEnumerable<LAN_File_Sharing_Application.Models.userFolder>
+
+<div class="container mt-4">
+    <h2>📁 Danh sách thư mục</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tên thư mục</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.FolderName</td>
+                    <td>
+                        <a asp-action="Upload" asp-route-id="@f.ID" class="btn btn-primary btn-sm">Upload ảnh</a>
+                        <a asp-action="ViewImages" asp-route-id="@f.ID" class="btn btn-success btn-sm">Xem ảnh</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

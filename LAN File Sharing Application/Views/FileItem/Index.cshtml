@@ -1,0 +1,38 @@
+﻿@model IEnumerable<LAN_File_Sharing_Application.Models.FileItem>
+@{
+    ViewData["Title"] = "Danh sách tệp tin";
+}
+<div class="container mt-4">
+    <h2>📂 Danh sách tệp tin</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">+ Tạo tệp tin mới</a>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên tệp</th>
+                <th>Người tạo</th>
+                <th>Ngày tạo</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.FileName</td>
+                    <td>@f.UploadedBy</td>
+                    <td>@f.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <a asp-action="UploadImages" asp-route-id="@f.Id" class="btn btn-sm btn-primary">Thêm ảnh</a>
+                        <a asp-action="ViewImages" asp-route-id="@f.Id" class="btn btn-sm btn-info">Xem ảnh</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

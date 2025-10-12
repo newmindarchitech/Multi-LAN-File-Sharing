@@ -10,9 +10,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("Default");
-    options.UseSqlServer(connectionString);
+    options.UseSqlite("Data Source=lanfilesharing.db");
 });
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {

@@ -1,0 +1,14 @@
+﻿@{
+    var file = ViewBag.FileItem as LAN_File_Sharing_Application.Models.FileItem;
+    ViewData["Title"] = "Upload ảnh";
+}
+<div class="container mt-4">
+    <h2>📤 Upload ảnh vào tệp: <strong>@file.FileName</strong></h2>
+    <form asp-action="UploadImages" asp-route-id="@file.Id" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input type="file" name="images" multiple class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Tải lên</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>

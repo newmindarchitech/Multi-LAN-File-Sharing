@@ -1,0 +1,15 @@
+﻿@{
+    var folder = ViewBag.Folder as LAN_File_Sharing_Application.Models.userFolder;
+}
+
+<div class="container mt-4">
+    <h3>📤 Upload ảnh vào thư mục: @folder.FolderName</h3>
+
+    <form asp-action="Upload" asp-route-id="@folder.ID" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input type="file" name="images" multiple class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success">Tải lên</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
