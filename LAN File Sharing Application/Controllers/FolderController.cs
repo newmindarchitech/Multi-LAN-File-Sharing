@@ -129,7 +129,7 @@ namespace LAN_File_Sharing_Application.Controllers
                         if (Directory.Exists(findFolder))
                         {
                             Directory.Delete(changeFolderName);
-                            return RedirectToAction("Index", "Folder");
+                            return RedirectToAction("Index", "Folder", new {id=deleteFolder.ID});
                         }
                     }
                     else
