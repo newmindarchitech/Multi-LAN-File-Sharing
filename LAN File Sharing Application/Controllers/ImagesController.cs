@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using LAN_File_Sharing_Application.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 namespace LAN_File_Sharing_Application.Controllers
 {
     [Authorize(Policy ="UserAuth")]
     
     public class ImagesController : Controller
     {
+
         private readonly DatabaseContext _db;
         private readonly IWebHostEnvironment _environment;
         public ImagesController(DatabaseContext database,IWebHostEnvironment ev) {
@@ -18,6 +20,7 @@ namespace LAN_File_Sharing_Application.Controllers
         {
             TempData["id"] = id;
             TempData["Folder"] = id;
+            TempData["Download"]=id;
             var list=_db.Images.Where(i=>i.FolderID==id).OrderByDescending(o=>o.ImageName).ToList();
             
             return View(list);
@@ -84,5 +87,17 @@ namespace LAN_File_Sharing_Application.Controllers
             
             return RedirectToAction("Index", "Images", new {id=holder2});
         }
+
+        public FileResult Download(Guid id) { 
+            var file_name=_db.Images.Find(id);
+            var holder = TempData["Download"];
+            var findfolder = _db.UserFolders.FirstOrDefault(fi => fi.ID == Guid.Parse(holder.ToString()));
+            string folderName = findfolder.FolderName;
+
+            string path = _environment.WebRootPath + "/UserFolders/" + findfolder.FolderName + "/" + file_name.ImageName;
+            byte[] read_file=System.IO.File.ReadAllBytes(path);
+
+            return File(read_file, "application/octet-stream",file_name.ImageName);
+        }   
     }
 }
