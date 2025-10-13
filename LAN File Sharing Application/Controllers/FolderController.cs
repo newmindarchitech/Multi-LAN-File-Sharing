@@ -119,14 +119,32 @@ namespace LAN_File_Sharing_Application.Controllers
             {
                 try
                 {
-                    _db.UserFolders.Remove(deleteFolder);
-                     _db.SaveChanges();
-                    string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
-                    string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
-                    if (Directory.Exists(findFolder))
+                    List<Images> imagesDeleteAfter=_db.Images.Where(i=>i.FolderID==deleteFolder.ID).ToList();
+                    if (imagesDeleteAfter.Count == 0)
                     {
-                        Directory.Delete(changeFolderName);
-                        return RedirectToAction("Index", "Folder");
+                        _db.UserFolders.Remove(deleteFolder);
+                        _db.SaveChanges();
+                        string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                        string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                        if (Directory.Exists(findFolder))
+                        {
+                            Directory.Delete(changeFolderName);
+                            return RedirectToAction("Index", "Folder");
+                        }
+                    }
+                    else
+                    {
+                        _db.Images.RemoveRange(imagesDeleteAfter);
+
+                        _db.UserFolders.Remove(deleteFolder);
+                        _db.SaveChanges();
+                        string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                        string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                        if (Directory.Exists(findFolder))
+                        {
+                            Directory.Delete(changeFolderName, true);
+                            return RedirectToAction("Index", "Folder");
+                        }
                     }
                 }
                 catch (DbUpdateException e)
