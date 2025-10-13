@@ -31,7 +31,7 @@ namespace LAN_File_Sharing_Application.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult>Create(Guid id,ImageSubmitForm model)
+        public async Task<IActionResult>Create(ImageSubmitForm model)
         {
             if (model.File == null)
             {
@@ -48,16 +48,17 @@ namespace LAN_File_Sharing_Application.Controllers
                     };
                     try
                     {
-                        _db.Images.Add(newImage);
-                        await _db.SaveChangesAsync();
-                        var findFolder = _db.UserFolders.FirstOrDefault(i => i.ID == id);
+                        var findFolder = _db.UserFolders.FirstOrDefault(i => i.ID == Guid.Parse(folderid.ToString()));
                         string newImagePath = Path.Combine(_environment.WebRootPath + "/UserFolders/", findFolder.FolderName, model.File.FileName);
                         using (var stream = System.IO.File.Create(newImagePath))
                         {
                             model.File.CopyTo(stream);
                         }
+                        _db.Images.Add(newImage);
+                        await _db.SaveChangesAsync();
                         ModelState.Clear();
-                        return RedirectToAction("Index", "Images", new {id=id});
+
+                        return RedirectToAction("Index", "Images", new {id=Guid.Parse(folderid.ToString())});
                     }
                     catch (DbUpdateException e)
                     {

@@ -17,7 +17,8 @@ namespace LAN_File_Sharing_Application.Controllers
         }
         public IActionResult Index()
         {
-            var listFolders = _db.UserFolders.ToList();
+            var checkbucket = _db.Users.FirstOrDefault(u => u.EmailAddress == User.Identity.Name);
+            var listFolders = _db.UserFolders.Where(fo=>fo.BucketID==checkbucket.BucketID).OrderByDescending(i=>i.FolderName).ToList();
             return View(listFolders);
         }
         public IActionResult Create()
@@ -125,11 +126,11 @@ namespace LAN_File_Sharing_Application.Controllers
                         _db.UserFolders.Remove(deleteFolder);
                         _db.SaveChanges();
                         string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
-                        string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                        string deleteFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
                         if (Directory.Exists(findFolder))
                         {
-                            Directory.Delete(changeFolderName);
-                            return RedirectToAction("Index", "Folder", new {id=deleteFolder.ID});
+                            Directory.Delete(deleteFolderName);
+                            return RedirectToAction("Index", "Folder");
                         }
                     }
                     else
@@ -139,10 +140,10 @@ namespace LAN_File_Sharing_Application.Controllers
                         _db.UserFolders.Remove(deleteFolder);
                         _db.SaveChanges();
                         string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
-                        string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
+                        string deleteFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", deleteFolder.FolderName);
                         if (Directory.Exists(findFolder))
                         {
-                            Directory.Delete(changeFolderName, true);
+                            Directory.Delete(deleteFolderName, true);
                             return RedirectToAction("Index", "Folder");
                         }
                     }
