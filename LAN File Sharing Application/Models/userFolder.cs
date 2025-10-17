@@ -13,6 +13,7 @@ namespace LAN_File_Sharing_Application.Models
 
         public string? Description { get; set; }
 
+        public bool? IsGlobal { get; set; }
         public ICollection<Images> Images { get; set; }
 
         [JsonIgnore]

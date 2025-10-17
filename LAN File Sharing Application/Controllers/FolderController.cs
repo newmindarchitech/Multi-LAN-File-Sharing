@@ -18,7 +18,7 @@ namespace LAN_File_Sharing_Application.Controllers
         public IActionResult Index()
         {
             var checkbucket = _db.Users.FirstOrDefault(u => u.EmailAddress == User.Identity.Name);
-            var listFolders = _db.UserFolders.Where(fo=>fo.BucketID==checkbucket.BucketID).OrderByDescending(i=>i.FolderName).ToList();
+            var listFolders = _db.UserFolders.Where(fo=>fo.BucketID==checkbucket.BucketID ).OrderByDescending(i=>i.FolderName).ToList();
             return View(listFolders);
         }
         public IActionResult Create()
@@ -37,6 +37,7 @@ namespace LAN_File_Sharing_Application.Controllers
                         ID = Guid.NewGuid(),
                         FolderName = model.FolderName,
                         Description = model.FolderDescription,
+                        IsGlobal=Boolean.Parse(model.IsGlobal),
                         BucketID = currentuser.BucketID
                     };
                     try
@@ -79,6 +80,7 @@ namespace LAN_File_Sharing_Application.Controllers
                     FolderName = fill.FolderName,
                     BucketID = fill.BucketID,
                     FolderDescription = fill.Description,
+                    IsGlobal= fill.IsGlobal.ToString(),
                     FolderID = fill.ID
                 };
             
@@ -93,17 +95,31 @@ namespace LAN_File_Sharing_Application.Controllers
             try
             {
                 var editFolder = await _db.UserFolders.FindAsync(id);
-                editFolder.FolderName = model.FolderName;
-                editFolder.Description = model.FolderDescription;
-                await _db.SaveChangesAsync();
-                string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders", folderName);
-                string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders", editFolder.FolderName);
-                if (Directory.Exists(findFolder)) {
-                    Directory.Move(findFolder, changeFolderName);
+                if (editFolder.FolderName != model.FolderName)
+                {
+                    editFolder.FolderName = model.FolderName;
+                    editFolder.Description = model.FolderDescription;
+                    editFolder.IsGlobal = Boolean.Parse(model.IsGlobal.ToString());
+                    await _db.SaveChangesAsync();
+                    string findFolder = Path.Combine(_environment.WebRootPath + "/UserFolders/", folderName);
+                    string changeFolderName = Path.Combine(_environment.WebRootPath + "/UserFolders/", editFolder.FolderName);
+                    if (Directory.Exists(findFolder))
+                    {
+                        Directory.Move(findFolder, changeFolderName);
+                        return RedirectToAction("Index");
+                    }
+                    ModelState.Clear();
                     return RedirectToAction("Index");
                 }
-                ModelState.Clear();
-                return RedirectToAction("Index");
+                else
+                {
+                    editFolder.FolderName = model.FolderName;
+                    editFolder.Description = model.FolderDescription;
+                    editFolder.IsGlobal = Boolean.Parse(model.IsGlobal.ToString());
+                    await _db.SaveChangesAsync();
+                    ModelState.Clear();
+                    return RedirectToAction("Index");
+                }
             }
             catch (DbUpdateException e) {
                 e.ToString();
@@ -159,6 +175,12 @@ namespace LAN_File_Sharing_Application.Controllers
         public IActionResult Redirect(Guid id)
         {
             return RedirectToAction("Index", "Images", new { id = id });
+        }
+        public IActionResult GlobalList()
+        {
+            var checkbucket = _db.Users.FirstOrDefault(u => u.EmailAddress == User.Identity.Name);
+            var listFolders = _db.UserFolders.Where(fo =>  fo.IsGlobal ==true).OrderByDescending(i => i.FolderName).ToList();
+            return View(listFolders);
         }
     }
         

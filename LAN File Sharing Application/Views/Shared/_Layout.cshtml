@@ -28,8 +28,15 @@
                         </li>
                         @if (Context.User.Identity?.Name != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Folder" asp-action="Index">Bucket</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="bucketDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Bucket
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="bucketDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Folder" asp-action="Index">Local Bucket</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Folder" asp-action="GlobalList">Global Buckets</a></li>
+                                    <!-- Add more items as needed -->
+                                </ul>
                             </li>
                         }
                     </ul>
